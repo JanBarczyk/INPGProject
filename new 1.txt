@@ -1,0 +1,23 @@
+#include <SFML/Graphics.hpp>
+#include<time.h>
+
+using namespace sf;
+int size1 = 33;
+int size2= 26;
+int sizegeneral=16;
+int dim1= sizegeneral*size1;
+int dim2= sizegeneral*size2;
+
+int main ()
+{
+    RenderWindow window(VideoMode(dim1,dim2), "The Snake");
+    Texture t1,t2;
+    t1.loadFromFile("images/blue.png");
+    t2.loadFromFile("images/green.png");
+
+
+
+
+
+    return 0;
+}
