@@ -14,8 +14,12 @@ int main ()
     Texture t1,t2;
     t1.loadFromFile("images/blue.png");
     t2.loadFromFile("images/green.png");
-
-
+    Sprite spriteinitial(t1);
+    Sprite spritefollowing(t2);
+    
+    while(window.isOpen()) {
+    Event initialevent;
+    
 
 
 
