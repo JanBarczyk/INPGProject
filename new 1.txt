@@ -19,7 +19,17 @@ int main ()
     
     while(window.isOpen()) {
     Event initialevent;
-    
+    while(window.pollEvent(initialevent)) {
+       if(initialevent.type==Event::Closed)
+          window.close() ;
+          }
+     window.clear();
+     for(int i=0;i<size1;i++)
+        for(int j;j<size2,j++)
+        {spriteinitial.setPosition(i*sizegeneral,j*sizegeneral); window.draw(spriteinitial); }
+        
+     window.display();
+     }
 
 
 
