@@ -1,37 +1,96 @@
 #include <SFML/Graphics.hpp>
-#include<time.h>
-
+#include <time.h>
 using namespace sf;
-int size1 = 33;
-int size2= 26;
-int sizegeneral=16;
-int dim1= sizegeneral*size1;
-int dim2= sizegeneral*size2;
 
-int main ()
+int size1=35;
+int size2=25;
+int size=17;
+int dim1 = size*size1;
+int dim2 = size*size2;
+int direct=4;
+int numme=4;
+
+struct Snake
+{ int x,y;}  q[100];
+
+struct Honeyfruit
+{ int x,y;} f;
+
+void Tickle()
+ {
+    for (int i=numme;i>0;--i)
+	 {q[i].x=q[i-1].x;
+	 q[i].y=q[i-1].y;}
+
+    if (direct==0) q[0].y+=1;
+    if (direct==1) q[0].x-=1;
+    if (direct==2) q[0].x+=1;
+    if (direct==3) q[0].y-=1;
+
+	if ((q[0].x==f.x) && (q[0].y==f.y))
+      { numme++;
+    	f.x=rand() % size1;
+        f.y=rand() % size2; }
+
+    if (q[0].x>size1) q[0].x=0;  if (q[0].x<0) q[0].x=size1;
+    if (q[0].y>size2) q[0].y=0;  if (q[0].y<0) q[0].y=size2;
+
+    for (int i=1;i<numme;i++)
+     if (q[0].x==q[i].x && q[0].y==q[i].y)  numme=i;
+ }
+
+int main()
 {
-    RenderWindow window(VideoMode(dim1,dim2), "The Snake");
-    Texture t1,t2;
-    t1.loadFromFile("images/blue.png");
-    t2.loadFromFile("images/green.png");
-    Sprite spriteinitial(t1);
-    Sprite spritefollowing(t2);
-    
-    while(window.isOpen()) {
-    Event initialevent;
-    while(window.pollEvent(initialevent)) {
-       if(initialevent.type==Event::Closed)
-          window.close() ;
-          }
-     window.clear();
-     for(int i=0;i<size1;i++)
-        for(int j;j<size2,j++)
-        {spriteinitial.setPosition(i*sizegeneral,j*sizegeneral); window.draw(spriteinitial); }
-        
-     window.display();
-     }
+	srand(time(0));
 
+    RenderWindow window(VideoMode(dim1, dim2), "The Snake");
 
+	Texture t1,t2;
+	t1.loadFromFile("Images/green.png");
+	t2.loadFromFile("Images/red.png");
+
+	Sprite spriteinitial(t1);
+	Sprite spritefollowing(t2);
+
+	Clock clock;
+    float timer=0, delay=0.1;
+
+	f.x=10;
+    f.y=10;
+
+    while (window.isOpen())
+    {
+		float time = clock.getElapsedTime().asSeconds();
+		clock.restart();
+        timer+=time;
+
+        Event e;
+        while (window.pollEvent(e))
+        {
+            if (e.type == Event::Closed)
+                window.close();
+		}
+
+		if (Keyboard::isKeyPressed(Keyboard::Left)) direct=1;
+	    if (Keyboard::isKeyPressed(Keyboard::Right))  direct=2;
+	    if (Keyboard::isKeyPressed(Keyboard::Up)) direct=3;
+		if (Keyboard::isKeyPressed(Keyboard::Down)) direct=0;
+
+		if (timer>delay) {timer=0; Tickle();}
+    window.clear();
+
+    for (int i=0; i<size1; i++)
+	  for (int j=0; j<size2; j++)
+		{ spriteinitial.setPosition(i*size,j*size);  window.draw(spriteinitial); }
+
+	for (int i=0;i<numme;i++)
+	    { spritefollowing.setPosition(q[i].x*size, q[i].y*size);  window.draw(spritefollowing); }
+
+	spritefollowing.setPosition(f.x*size,  f.y*size);  window.draw(spritefollowing);
+
+	window.display();
+	}
 
     return 0;
 }
+
