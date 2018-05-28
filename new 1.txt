@@ -1,3 +1,7 @@
+// U need to create Images folder in folder where the Code is and add color files green.png and red.png to it //
+
+
+
 #include <SFML/Graphics.hpp>
 #include <time.h>
 using namespace sf;
